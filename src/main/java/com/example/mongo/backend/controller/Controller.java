@@ -34,7 +34,7 @@ public class Controller {
     @PostMapping
     public String registerItem(@RequestBody Item item){
         service.registerItem(item);
-        return "http://localhost:8080/api/items/" + item.getId();
+        return "https://nfc-rental-system2-1.onrender.com/api/items/" + item.getId();
     }
 
     @PutMapping("/{itemId}/modify")
