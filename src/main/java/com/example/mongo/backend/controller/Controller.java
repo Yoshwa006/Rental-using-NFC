@@ -4,6 +4,7 @@ package com.example.mongo.backend.controller;
 import com.example.mongo.backend.Item.Item;
 import com.example.mongo.backend.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,4 +47,16 @@ public class Controller {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/{itemId}/delete")
+    public ResponseEntity<?> deleteItemDetails(@PathVariable String itemId) {
+        boolean deleted = service.itemDelete(itemId);
+
+        if (deleted) {
+            return ResponseEntity.ok("Item deleted successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found.");
+        }
+    }
+
 }

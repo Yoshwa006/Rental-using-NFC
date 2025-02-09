@@ -3,6 +3,8 @@ package com.example.mongo.backend.Item;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 
 @Document(collection = "items") // Specifies the MongoDB collection
 public class Item {
@@ -11,6 +13,16 @@ public class Item {
     private String id; // MongoDB uses String for IDs by default
 
     private String itemName;
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    private List<String> images; // List of image URLs
     private Long price;
     private String description;
 
@@ -23,8 +35,9 @@ public class Item {
     public Item() {}
 
     // Parameterized Constructor
-    public Item(String itemName, Long price, String description, String ownerName, String phone, boolean isAvailable, String password) {
+    public Item(String itemName, Long price, String description, String ownerName, String phone, boolean isAvailable, String password,List<String> images) {
         this.itemName = itemName;
+        this.images=images;
         this.price = price;
         this.description = description;
         this.ownerName = ownerName;

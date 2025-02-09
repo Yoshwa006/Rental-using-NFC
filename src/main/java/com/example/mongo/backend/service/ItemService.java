@@ -51,4 +51,9 @@ public class ItemService {
         public List<Item> returnAll(){
             return repo.findAll();
         }
+
+        public boolean itemDelete(String id){
+        repo.deleteById(id);
+        return true;
+        }
     }

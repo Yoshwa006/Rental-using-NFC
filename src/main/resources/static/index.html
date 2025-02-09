@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+
+        .item-card {
+          background-color: #fff;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          max-width: 300px;
+          width: 100%;
+          text-align: center;
+        }
+
+        .item-card h2 {
+          margin: 0 0 10px;
+          font-size: 24px;
+          color: #333;
+        }
+
+        .item-card p {
+          margin: 5px 0;
+          font-size: 16px;
+          color: #666;
+        }
+
+        .item-card .price {
+          font-size: 20px;
+          font-weight: bold;
+          color: #28a745;
+        }
+
+        .item-card .availability {
+          font-size: 14px;
+          color: #fff;
+          background-color: #28a745;
+          padding: 5px 10px;
+          border-radius: 12px;
+          display: inline-block;
+          margin-top: 10px;
+        }
+
+        .item-card .owner-details {
+          margin-top: 20px;
+          border-top: 1px solid #eee;
+          padding-top: 10px;
+        }
+
+        .item-card .owner-details h3 {
+          margin: 0 0 10px;
+          font-size: 18px;
+          color: #333;
+        }
+
+        .item-card .owner-details p {
+          margin: 5px 0;
+          font-size: 14px;
+          color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="item-card" id="item-card">
+    <!-- Content will be dynamically populated here -->
+    <h2>Loading...</h2>
+</div>
+
+<script>
+    // API URL (replace with your actual API endpoint)
+    const apiUrl = 'https://nfc-rental-system2-1.onrender.com/api/items/67a72c7e8dba617ef6567a41';
+
+    // Function to fetch item details from the API
+    async function fetchItemDetails() {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error('Failed to fetch item details');
+        }
+        const item = await response.json();
+
+        // Update the HTML with the fetched data
+        const itemCard = document.getElementById('item-card');
+        itemCard.innerHTML = `
+          <h2>${item.itemName}</h2>
+          <p class="price">₹${item.price.toLocaleString()}</p>
+          <p>${item.description}</p>
+          <p class="availability">${item.available ? 'Available' : 'Not Available'}</p>
+
+          <div class="owner-details">
+            <h3>Owner Details</h3>
+            <p>Name: ${item.ownerName}</p>
+            <p>Phone: ${item.phone}</p>
+          </div>
+        `;
+      } catch (error) {
+        console.error('Error fetching item details:', error);
+        const itemCard = document.getElementById('item-card');
+        itemCard.innerHTML = `<h2>Error loading item details. Please try again later.</h2>`;
+      }
+    }
+
+    // Call the function to fetch and display item details
+    fetchItemDetails();
+</script>
+</body>
+</html>
