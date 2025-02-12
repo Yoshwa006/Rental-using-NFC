@@ -41,9 +41,9 @@ return service.returnAll();
 
 
     @PostMapping
-    public ResponseEntity<?> registerItem(@RequestBody Item item) {
+    public String registerItem(@RequestBody Item item) {
         service.registerItem(item);
-        return ResponseEntity.ok().build();
+        return "https://nfc-rental-system2-1.onrender.com/api/items" + item.getId();
     }
 
     @PutMapping("/{itemId}/modify")
