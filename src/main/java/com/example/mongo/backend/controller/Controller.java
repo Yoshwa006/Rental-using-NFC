@@ -23,6 +23,10 @@ public class Controller {
         this.service = service;
 
     }
+    @GetMapping
+public List<Item> returnAll(){
+return.service.returnAll();
+}
 
 
     @GetMapping("/{id}")
