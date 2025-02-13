@@ -7,120 +7,75 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 20px auto;
+            margin: 20px;
             padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
+            background-color: #f4f4f4;
             text-align: center;
         }
-        img {
-            max-width: 100%;
-            height: auto;
+        .container {
+            background: white;
+            padding: 20px;
             border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            text-align: left;
         }
-        button {
-            margin: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        h2 {
+            color: #333;
         }
-        .modify {
-            background-color: #ffcc00;
-            color: black;
+        p {
+            margin: 8px 0;
+            color: #555;
         }
-        .save {
-            background-color: #4CAF50;
-            color: white;
+        .available {
+            color: green;
         }
-        .cancel {
-            background-color: #777;
-            color: white;
-        }
-        .delete {
-            background-color: red;
-            color: white;
+        .not-available {
+            color: red;
         }
     </style>
 </head>
 <body>
-<h1 id="itemName"></h1>
-<img id="itemImage" alt="Item Image">
-<p><strong>Price:</strong> <span id="itemPrice"></span></p>
-<p><strong>Description:</strong> <span id="itemDescription"></span></p>
-<p><strong>Owner:</strong> <span id="itemOwner"></span></p>
-<p><strong>Contact:</strong> <span id="itemContact"></span></p>
-<p><strong>Availability:</strong> <span id="itemAvailability"></span></p>
-<div id="editFields" style="display:none;">
-    <input type="text" id="editName" placeholder="Edit Name">
-    <input type="number" id="editPrice" placeholder="Edit Price">
-    <input type="text" id="editDescription" placeholder="Edit Description">
+<div class="container">
+    <h2 id="itemName">Loading...</h2>
+    <p><strong>Price:</strong> <span id="itemPrice"></span></p>
+    <p><strong>Description:</strong> <span id="itemDescription"></span></p>
+    <p><strong>Owner:</strong> <span id="itemOwner"></span></p>
+    <p><strong>Contact:</strong> <span id="itemPhone"></span></p>
+    <p><strong>Availability:</strong> <span id="itemAvailability"></span></p>
 </div>
-<button class="modify" onclick="toggleEdit()">Modify</button>
-<button class="save" onclick="updateItem()" style="display:none;">Save</button>
-<button class="cancel" onclick="toggleEdit()" style="display:none;">Cancel</button>
-<button class="delete" onclick="deleteItem()">Delete</button>
 
 <script>
-    const apiUrl = 'https://nfc-rental-system2-1.onrender.com/api/items/67a82387991a85169f19566e';
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
 
-    function fetchItem() {
+    const itemId = getQueryParam("id");
+
+    if (itemId) {
+        const apiUrl = `https://nfc-rental-system2-1.onrender.com/api/items/${itemId}`;
+
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 document.getElementById('itemName').innerText = data.itemName;
-                document.getElementById('itemImage').src = data.images;
                 document.getElementById('itemPrice').innerText = `$${data.price}`;
                 document.getElementById('itemDescription').innerText = data.description;
                 document.getElementById('itemOwner').innerText = data.ownerName;
-                document.getElementById('itemContact').innerText = data.phone;
-                document.getElementById('itemAvailability').innerText = data.available ? 'Available' : 'Not Available';
+                document.getElementById('itemPhone').innerText = data.phone;
+
+                const availability = document.getElementById('itemAvailability');
+                availability.innerText = data.available ? 'Available' : 'Not Available';
+                availability.className = data.available ? 'available' : 'not-available';
             })
-            .catch(error => console.error('Error fetching item:', error));
+            .catch(error => {
+                console.error('Error fetching item:', error);
+                document.getElementById('itemName').innerText = "Item not found!";
+            });
+    } else {
+        alert("No item ID provided in the URL!");
     }
-
-    function toggleEdit() {
-        const isEditing = document.getElementById('editFields').style.display === 'block';
-        document.getElementById('editFields').style.display = isEditing ? 'none' : 'block';
-        document.querySelector('.save').style.display = isEditing ? 'none' : 'inline-block';
-        document.querySelector('.cancel').style.display = isEditing ? 'none' : 'inline-block';
-        document.querySelector('.modify').style.display = isEditing ? 'inline-block' : 'none';
-    }
-
-    function updateItem() {
-        const updatedItem = {
-            itemName: document.getElementById('editName').value,
-            price: document.getElementById('editPrice').value,
-            description: document.getElementById('editDescription').value
-        };
-        fetch(apiUrl + '/modify', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedItem)
-        })
-        .then(response => response.json())
-        .then(() => {
-            alert('Item updated successfully');
-            fetchItem();
-            toggleEdit();
-        })
-        .catch(error => alert('Error updating item: ' + error.message));
-    }
-
-    function deleteItem() {
-        if (confirm('Are you sure you want to delete this item?')) {
-            fetch(apiUrl, { method: 'DELETE' })
-                .then(() => {
-                    alert('Item deleted successfully');
-                    document.body.innerHTML = '<h1>Item deleted</h1>';
-                })
-                .catch(error => alert('Error deleting item: ' + error.message));
-        }
-    }
-
-    fetchItem();
 </script>
 </body>
 </html>

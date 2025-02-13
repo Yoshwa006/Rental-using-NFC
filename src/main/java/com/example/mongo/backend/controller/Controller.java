@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/items")
+@RequestMapping()
 public class Controller {
 
     private final ItemService service;
@@ -44,7 +44,7 @@ return service.returnAll();
     @PostMapping
     public String registerItem(@RequestBody Item item) {
         service.registerItem(item);
-        return "https://nfc-rental-system2-1.onrender.com/api/items" + item.getId();
+        return "https://nfc-rental-system2-1.onrender.com/index.html?id=" + item.getId();
     }
 
     @PutMapping("/{itemId}/modify")
