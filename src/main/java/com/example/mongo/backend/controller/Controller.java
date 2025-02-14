@@ -42,7 +42,7 @@ public class Controller {
     @PostMapping
     public ResponseEntity<String> registerItem(@RequestBody Item item) {
         service.registerItem(item);
-        String url = "https://nfc-rental-system2-1.onrender.com/items/" + item.getId();
+        String url = "https://yoshwa006.github.io/nfc-frontend/?id=" + item.getId();
         return ResponseEntity.status(HttpStatus.CREATED).body(url);
     }
 
