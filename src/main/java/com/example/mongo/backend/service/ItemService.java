@@ -38,6 +38,8 @@ public class ItemService {
                 existingItem.setOwnerName(updatedItem.getOwnerName());
                 existingItem.setPhone(updatedItem.getPhone());
                 existingItem.setAvailable(updatedItem.isAvailable());
+                existingItem.setDateOfUpload(updatedItem.getDateOfUpload());
+                existingItem.setPricePerDay(updatedItem.getPricePerDay());
 
                 // Save updated item
                 return repo.save(existingItem);
@@ -55,5 +57,9 @@ public class ItemService {
         public boolean itemDelete(String id){
         repo.deleteById(id);
         return true;
+        }
+
+        public void deleteAll(){
+        repo.deleteAll();
         }
     }

@@ -17,7 +17,25 @@ public class Item {
     public List<String> getImages() {
         return images;
     }
+    private String DateOfUpload;
 
+    public int getPricePerDay() {
+        return pricePerDay;
+    }
+
+    public void setPricePerDay(int pricePerDay) {
+        this.pricePerDay = pricePerDay;
+    }
+
+    public String getDateOfUpload() {
+        return DateOfUpload;
+    }
+
+    public void setDateOfUpload(String dateOfUpload) {
+        DateOfUpload = dateOfUpload;
+    }
+
+    private int pricePerDay;
     public void setImages(List<String> images) {
         this.images = images;
     }
@@ -35,7 +53,7 @@ public class Item {
     public Item() {}
 
     // Parameterized Constructor
-    public Item(String itemName, Long price, String description, String ownerName, String phone, boolean isAvailable, String password,List<String> images) {
+    public Item(String DateOfUpload, int pricePerDay, String itemName, Long price, String description, String ownerName, String phone, boolean isAvailable, String password,List<String> images) {
         this.itemName = itemName;
         this.images=images;
         this.price = price;
@@ -44,6 +62,9 @@ public class Item {
         this.phone = phone;
         this.isAvailable = isAvailable;
         this.password = password;
+        this.DateOfUpload = DateOfUpload;
+        this.pricePerDay = pricePerDay;
+
     }
 
     // Getters and Setters

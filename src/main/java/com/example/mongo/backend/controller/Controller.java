@@ -67,4 +67,10 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found.");
         }
     }
+
+    @DeleteMapping("deletecomp")
+    public String deleteAll(){
+        service.deleteAll();
+        return "Deleted All!";
+    }
 }
