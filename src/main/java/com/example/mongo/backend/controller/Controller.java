@@ -42,7 +42,7 @@ public class Controller {
     @PostMapping
     public ResponseEntity<String> registerItem(@RequestBody Item item) {
         service.registerItem(item);
-        String url = "https://yoshwa006.github.io/nfc-frontend/?id=" + item.getId();
+        String url = "https://yoshwa006.github.io/Rental-System-using-NFC/?id=" + item.getId();
         return ResponseEntity.status(HttpStatus.CREATED).body(url);
     }
 
@@ -61,13 +61,12 @@ public class Controller {
     @DeleteMapping("/{itemId}")
     public ResponseEntity<?> deleteItemDetails(@PathVariable String itemId) {
         boolean deleted = service.itemDelete(itemId);
-        if (deleted) {
+        if (deleted)  {
             return ResponseEntity.ok("Item deleted successfully.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found.");
         }
     }
-
     @DeleteMapping("deletecomp")
     public String deleteAll(){
         service.deleteAll();
