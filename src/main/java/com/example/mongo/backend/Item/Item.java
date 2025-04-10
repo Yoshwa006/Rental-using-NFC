@@ -53,7 +53,7 @@ public class Item {
     public Item() {}
 
     // Parameterized Constructor
-    public Item(String DateOfUpload, int pricePerDay, String itemName, Long price, String description, String ownerName, String phone, boolean isAvailable, String password,List<String> images) {
+    public Item(String DateOfUpload, int pricePerDay, String itemName, Long price, String description, String ownerName, String phone, boolean isAvailable, String password, List<String> images) {
         this.itemName = itemName;
         this.images=images;
         this.price = price;

@@ -1,7 +1,9 @@
 package com.example.mongo.backend.service;
 
-
 import com.example.mongo.backend.Item.Item;
+import com.example.mongo.backend.dto.ItemMapper;
+import com.example.mongo.backend.dto.ItemRequestDTO;
+import com.example.mongo.backend.dto.ItemResponseDTO;
 import com.example.mongo.backend.repo.ItemRepo;
 import org.springframework.stereotype.Service;
 
@@ -13,36 +15,44 @@ public class ItemService {
 
     private final ItemRepo repo;
 
-    public ItemService(ItemRepo repo){
+    public ItemService(ItemRepo repo) {
         this.repo = repo;
     }
 
-    public Item registerItem(Item item){
-        return repo.save(item);
+    // Register a new item
+    public ItemResponseDTO registerItem(ItemRequestDTO dto) {
+        Item item = ItemMapper.toItem(dto);
+        repo.save(item);
+        return ItemMapper.toResponseDTO(item);
     }
 
-    public Optional<Item> getDetails(String id){
+    // Get item details by ID
+    public Optional<Item> getDetails(String id) {
         return repo.findById(id);
     }
 
-    public Item modifyDetails(String itemId, Item updatedItem) {
+    // Modify an existing item based on ID and DTO
+    public ItemResponseDTO modifyDetails(String itemId, ItemRequestDTO requestDTO) {
         Optional<Item> existingItemOptional = repo.findById(itemId);
 
         if (existingItemOptional.isPresent()) {
             Item existingItem = existingItemOptional.get();
 
-            if (existingItem.getPassword().equals(updatedItem.getPassword())) {
-                existingItem.setItemName(updatedItem.getItemName());
-                existingItem.setPrice(updatedItem.getPrice());
-                existingItem.setDescription(updatedItem.getDescription());
-                existingItem.setOwnerName(updatedItem.getOwnerName());
-                existingItem.setPhone(updatedItem.getPhone());
-                existingItem.setAvailable(updatedItem.isAvailable());
-                existingItem.setDateOfUpload(updatedItem.getDateOfUpload());
-                existingItem.setPricePerDay(updatedItem.getPricePerDay());
+            // Password check
+            if (existingItem.getPassword().equals(requestDTO.getPassword())) {
+                // Update values
+                existingItem.setItemName(requestDTO.getItemName());
+                existingItem.setPrice(requestDTO.getPrice());
+                existingItem.setDescription(requestDTO.getDescription());
+                existingItem.setOwnerName(requestDTO.getOwnerName());
+                existingItem.setPhone(requestDTO.getPhone());
+                existingItem.setAvailable(requestDTO.isAvailable());
+                existingItem.setDateOfUpload(requestDTO.getDateOfUpload());
+                existingItem.setPricePerDay(requestDTO.getPricePerDay());
+                existingItem.setImages(requestDTO.getImages());
 
-                // Save updated item
-                return repo.save(existingItem);
+                Item updatedItem = repo.save(existingItem);
+                return ItemMapper.toResponseDTO(updatedItem);
             } else {
                 throw new IllegalArgumentException("Invalid password. Modification not allowed.");
             }
@@ -50,16 +60,20 @@ public class ItemService {
             throw new IllegalArgumentException("Item not found.");
         }
     }
-        public List<Item> returnAll(){
-            return repo.findAll();
-        }
 
-        public boolean itemDelete(String id){
+    // Return all items
+    public List<Item> returnAll() {
+        return repo.findAll();
+    }
+
+    // Delete item by ID
+    public boolean itemDelete(String id) {
         repo.deleteById(id);
         return true;
-        }
-
-        public void deleteAll(){
-        repo.deleteAll();
-        }
     }
+
+    // Delete all items
+    public void deleteAll() {
+        repo.deleteAll();
+    }
+}
