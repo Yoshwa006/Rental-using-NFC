@@ -1,6 +1,6 @@
 # RentalEase - Simplifying Rentals with Spring Boot
 
-## Introduction
+## Introduction..
 RentalEase is a simple yet efficient rental management system built using Spring Boot and Docker. It streamlines the process of renting items, making it easier for users to list, manage, and rent items securely. The system ensures a hassle-free experience by offering features such as user authentication, rental tracking, and item availability updates.
 
 ## Features
